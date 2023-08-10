@@ -1,6 +1,5 @@
 <!--# 使用云上曲率实时语音识别&翻译插件-->
 # LiveData RTVT
-### [中文文档](README-zh.md) <br />
 <!--本文介绍如何在你的项目中集成和使用云上曲率实时语音识别&翻译插件（以下简称曲率识别及翻译插件），包括Android和iOS平台。-->
 
 This guide is provided by LiveData. Agora is planning a documentation upgrade program for all extensions on the marketplace. Please stay tuned.
