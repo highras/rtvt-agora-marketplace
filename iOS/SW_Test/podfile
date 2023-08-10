@@ -1,0 +1,14 @@
+
+platform :ios, '9.0'
+use_frameworks!
+
+
+target 'SW_Test' do
+
+pod 'AgoraRtcEngine_iOS','~> 4.2.0'
+
+end
+
+
+
+
