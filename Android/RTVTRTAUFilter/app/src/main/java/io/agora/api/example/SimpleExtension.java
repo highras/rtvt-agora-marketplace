@@ -82,7 +82,6 @@ public class SimpleExtension extends AppCompatActivity implements View.OnClickLi
         findViewById(R.id.closeAudit).setOnClickListener(this);
         findViewById(R.id.starttrans).setOnClickListener(this);
         findViewById(R.id.stoptrans).setOnClickListener(this);
-        findViewById(R.id.stopextension).setOnClickListener(this);
 
         et_channel = findViewById(R.id.et_channel);
         findViewById(R.id.btn_join).setOnClickListener(this);
@@ -236,23 +235,22 @@ public class SimpleExtension extends AppCompatActivity implements View.OnClickLi
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Toast.makeText(this, "Start Translation", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Start Translation", Toast.LENGTH_SHORT).show();
 
             engine.setExtensionProperty(EXTENSION_VENDOR_NAME, EXTENSION_AUDIO_FILTER_VOLUME, "startAudioTranslation", jsonObject.toString());
         }
         else if (v.getId() == R.id.stoptrans){
+            Toast.makeText(this, "Stop Translation", Toast.LENGTH_SHORT).show();
             engine.setExtensionProperty(EXTENSION_VENDOR_NAME, EXTENSION_AUDIO_FILTER_VOLUME, "closeAudioTranslation", "{}");
         }
         else if (v.getId() == R.id.startaudit){
             JSONObject jsonObject = new JSONObject();
             try {
-                ArrayList<String> attrs = new ArrayList<String>(){{add("1");add("2");}};
-
                 String callbackUrl = getString(R.string.livedata_callbackUrl);
 
                 jsonObject.put("streamId", String.valueOf(System.currentTimeMillis()));
                 jsonObject.put("callbackUrl", callbackUrl);
-                jsonObject.put("audioLang", "en");
+                jsonObject.put("audioLang", "en-US");
 
 
                 String spid  = getString(R.string.livedata_audit_pid);
@@ -273,12 +271,12 @@ public class SimpleExtension extends AppCompatActivity implements View.OnClickLi
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Toast.makeText(this, "Start Audit", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Start Audit", Toast.LENGTH_SHORT).show();
             int ret = engine.setExtensionProperty(EXTENSION_VENDOR_NAME, EXTENSION_VIDEO_FILTER_WATERMARK, "startAudit", jsonObject.toString());
             Log.i("sdktest","Start Audit " + ret);
         }
         else if (v.getId() == R.id.closeAudit){
-            Toast.makeText(this, "End Audit", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "End Audit", Toast.LENGTH_SHORT).show();
             int ret = engine.setExtensionProperty(EXTENSION_VENDOR_NAME, EXTENSION_VIDEO_FILTER_WATERMARK, "closeAudit", "{}");
             Log.i("sdktest","setExtensionProperty closeAudit " + ret);
         }
@@ -341,15 +339,6 @@ public class SimpleExtension extends AppCompatActivity implements View.OnClickLi
         engine.enableExtension(EXTENSION_VENDOR_NAME, EXTENSION_VIDEO_FILTER_WATERMARK, false);
         handler.post(RtcEngine::destroy);
         engine = null;
-    }
-
-    private boolean hasAgoraSimpleFilterLib(){
-        try {
-            Class<?> aClass = Class.forName("io.agora.extension.ExtensionManager");
-            return aClass != null;
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
     }
 
     /**

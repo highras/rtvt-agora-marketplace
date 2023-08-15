@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".examples.advanced.SimpleExtension">
+    tools:context=".SimpleExtension">
 
     <LinearLayout
         android:id="@+id/video_container"
@@ -75,12 +75,11 @@
 
 
                 <Button
-                    android:textSize="14dp"
                     android:id="@+id/starttrans"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:layout_marginTop="44dp"
+                    android:layout_marginTop="12dp"
                     android:text="start translate"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/startaudit"></Button>
@@ -90,6 +89,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"
                     android:text="start audit"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"></androidx.appcompat.widget.AppCompatButton>
@@ -98,21 +98,13 @@
                     android:id="@+id/closeAudit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="40dp"
                     android:text="close audit"
+                    app:layout_constraintBottom_toBottomOf="@+id/startaudit"
                     app:layout_constraintStart_toEndOf="@+id/startaudit"
-                    app:layout_constraintTop_toTopOf="parent"></androidx.appcompat.widget.AppCompatButton>
+                    app:layout_constraintTop_toTopOf="@+id/startaudit"
+                    app:layout_constraintVertical_bias="0.0"></androidx.appcompat.widget.AppCompatButton>
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/stopextension"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="stop extension"
-                    app:layout_constraintBottom_toBottomOf="@+id/stoptrans"
-                    app:layout_constraintStart_toEndOf="@+id/stoptrans"
-                    app:layout_constraintTop_toTopOf="@+id/stoptrans"></androidx.appcompat.widget.AppCompatButton>
-
-                <androidx.appcompat.widget.AppCompatButton
+                <Button
                     android:id="@+id/stoptrans"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -120,7 +112,7 @@
                     app:layout_constraintBottom_toBottomOf="@+id/starttrans"
                     app:layout_constraintStart_toEndOf="@+id/starttrans"
                     app:layout_constraintTop_toTopOf="@+id/starttrans"
-                    app:layout_constraintVertical_bias="0.0"></androidx.appcompat.widget.AppCompatButton>
+                    app:layout_constraintVertical_bias="0.0"></Button>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
