@@ -512,8 +512,8 @@ The Agora SDK `onEvent` contain keys:
 | ------ | ---------- |
 | appKey | buy and activate the extension project on Agora Console, then click View in the Secret column   |
 | appSecret    | buy and activate the extension project on Agora Console, then click View in the Secret column. |
-| srcLanguage   | source language，local language    |
-| destLanguage   | destination language，translate language   |
+| srcLanguage   | source language, see [language supported list](https://docs.ilivedata.com/en/ts/rtvt/language/)    |
+| destLanguage   | destination language, see [language supported list](https://docs.ilivedata.com/en/ts/rtvt/language/)   |
 
 #### closeAudioTranslation
 | Value    | Description  |
