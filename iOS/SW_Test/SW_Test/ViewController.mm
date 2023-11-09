@@ -104,11 +104,6 @@
 //进入房间 开启rtvt
 -(void)_startRtvtButtonClick{
     
-   
-    
-    
-    
-   
             
         NSDictionary * translateDic = @{@"appKey":self.appKeyRTVT,
                                         @"appSecret":self.appSecretRTVT,
