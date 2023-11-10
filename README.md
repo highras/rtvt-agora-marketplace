@@ -342,8 +342,13 @@ After enable LiveData RTVT extension， you can receive the results of voice tra
 ```java
 @Override
 public void onEvent(String vendor, String extension, String key, String value) {
-        key: "recognizeResult"  "translateResult"
+      key: "recognizeResult"  "translateResult"
       value:
+        {
+            ""result", 
+            "startTs", 
+            "endTs",
+        }
 }
 ```
 #### iOS
@@ -356,6 +361,11 @@ After enable LiveData RTVT extension， you can receive the results of voice tra
       extension:"RTVT"
             key: "recognizeResult"  "translateResult"
           value:
+              {
+                ""result", 
+                "startTs", 
+                "endTs",
+              }
 }
 ```
 
@@ -523,12 +533,12 @@ The Agora SDK `onEvent` contain keys:
 #### recognizeResult
 | Value    | Description  |
 | ------ | ---------- |
-| recognizeResult | result of real-time voice transcription  |
+| {"result", "startTs", "endTs"} | result of real-time voice transcription  |
 
 #### translateResult
 | Value    | Description  |
 | ------ | ---------- |
-| translateResult | result of real-time voice translation  |
+|{"result", "startTs", "endTs"} | result of real-time voice translation  |
 
 #### start
 | Value    | Description  |
