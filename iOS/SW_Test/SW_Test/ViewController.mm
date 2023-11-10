@@ -212,6 +212,23 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         
+        
+        //NSDictionary * dic = @{@"startTs":@(startTs),@"endTs":@(endTs),@"result":result,@"recTs":@(recTs)};
+        NSError * error;
+        NSData *jsonData = [value dataUsingEncoding:NSUTF8StringEncoding];
+        NSDictionary * dic = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                            options:NSJSONReadingMutableContainers error:&error];
+        if(error == nil){
+            
+    //        [[dic objectForKey:@"startTs"] longLongValue];
+    //        [[dic objectForKey:@"endTs"] longLongValue];
+    //        [dic objectForKey:@"result"];//nsstring
+    //        [[dic objectForKey:@"recTs"] longLongValue];
+
+        }
+        
+        
+        
         if ([key isEqualToString:@"recognizeResult"]) {
             
             [self.recognizedResultArray addObject:value];
