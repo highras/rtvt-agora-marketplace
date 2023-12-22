@@ -4,8 +4,11 @@
     <string name="agora_access_token" translatable="false"></string>
     <string name="livedata_translate_pid" translatable="false"></string>
     <string name="livedata_translate_key" translatable="false"></string>
+    <string name="livedata_translate_srclang" translatable="false"></string>
+    <string name="livedata_translate_dstlang" translatable="false"></string>
 
     <string name="livedata_audit_pid" translatable="false"></string>
     <string name="livedata_audit_key" translatable="false"></string>
     <string name="livedata_callbackUrl" translatable="false"></string>
+    <string name="livedata_audit_lang" translatable="false"></string>
 </resources>

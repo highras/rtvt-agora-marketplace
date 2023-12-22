@@ -61,6 +61,18 @@ public class SimpleExtension extends AppCompatActivity implements View.OnClickLi
     private AlertDialog mAlertDialog;
     private String mAlertDialogMsg;
 
+    String agora_app_id;
+    String agora_access_token;
+    long livedata_translate_pid;
+    String livedata_translate_key;
+    long livedata_audit_pid;
+    String livedata_audit_key;
+    String livedata_callbackUrl;
+    String livedata_translate_srclang;
+    String livedata_translate_dstlang;
+    String livedata_audit_lang;
+
+
     void addlog(String msg){
         runOnUiThread(new Runnable() {
             @Override
@@ -91,6 +103,27 @@ public class SimpleExtension extends AppCompatActivity implements View.OnClickLi
         rtvttestview = findViewById(R.id.rtvttest);
         srcadapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, srcarrayList);
         rtvttestview.setAdapter(srcadapter);
+
+        agora_app_id = getString(R.string.agora_app_id);
+        agora_access_token = getString(R.string.agora_access_token);
+        String slivedata_translate_pid = getString(R.string.livedata_translate_pid);
+        if (slivedata_translate_pid.isEmpty())
+            livedata_translate_pid = 0;
+        else
+            livedata_translate_pid = Long.parseLong(slivedata_translate_pid);
+        livedata_translate_key = getString(R.string.livedata_translate_key);
+
+        String slivedata_audit_pid = getString(R.string.livedata_audit_pid);
+        if (slivedata_audit_pid.isEmpty())
+            livedata_audit_pid = 0;
+        else
+            livedata_audit_pid = Long.parseLong(slivedata_audit_pid);
+        livedata_audit_key = getString(R.string.livedata_audit_key);
+        livedata_callbackUrl = getString(R.string.livedata_callbackUrl);
+
+        livedata_translate_srclang = getString(R.string.livedata_translate_srclang);
+        livedata_translate_dstlang = getString(R.string.livedata_translate_dstlang);
+        livedata_audit_lang = getString(R.string.livedata_audit_lang);
 
         try {
             RtcEngineConfig config = new RtcEngineConfig();
@@ -228,51 +261,62 @@ public class SimpleExtension extends AppCompatActivity implements View.OnClickLi
                     return;
                 }
 
-                jsonObject.put("srclang", "zh");
-                jsonObject.put("dstLang", "en");
-                jsonObject.put("appKey", pid);
-                jsonObject.put("appSecret", skey);
+                jsonObject.put("srclang", livedata_translate_srclang);
+                jsonObject.put("dstLang", livedata_translate_dstlang);
+
+                jsonObject.put("asrResult", true);
+                jsonObject.put("asrTempResult", false);
+                jsonObject.put("transResult", true);
+                jsonObject.put("appKey", livedata_translate_pid);
+                jsonObject.put("appSecret", livedata_translate_key);
+                jsonObject.put("userId", "1234567");
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            int ret  = engine.setExtensionProperty(EXTENSION_VENDOR_NAME, EXTENSION_AUDIO_FILTER_VOLUME, "startAudioTranslation", jsonObject.toString());
+            if (ret < 0){
+                showAlert("startAudioTranslation error ret:" + ret);
+                return;
+            }
             Toast.makeText(this, "Start Translation", Toast.LENGTH_SHORT).show();
-
-            engine.setExtensionProperty(EXTENSION_VENDOR_NAME, EXTENSION_AUDIO_FILTER_VOLUME, "startAudioTranslation", jsonObject.toString());
         }
         else if (v.getId() == R.id.stoptrans){
             Toast.makeText(this, "Stop Translation", Toast.LENGTH_SHORT).show();
             engine.setExtensionProperty(EXTENSION_VENDOR_NAME, EXTENSION_AUDIO_FILTER_VOLUME, "closeAudioTranslation", "{}");
         }
         else if (v.getId() == R.id.startaudit){
+
+            String spid  = getString(R.string.livedata_audit_pid);
+            if (spid.isEmpty()){
+                showAlert("Please configure the project ID for audit");
+                return;
+            }
+            long pid = Long.parseLong(spid);
+
+            if (livedata_audit_key.isEmpty()){
+                showAlert("Please configure the key for audit");
+                return;
+            }
+
             JSONObject jsonObject = new JSONObject();
             try {
-                String callbackUrl = getString(R.string.livedata_callbackUrl);
-
+                ArrayList<String> attrs = new ArrayList<String>(){{add("1");add("2");}};
                 jsonObject.put("streamId", String.valueOf(System.currentTimeMillis()));
-                jsonObject.put("callbackUrl", callbackUrl);
-                jsonObject.put("audioLang", "en-US");
-
-
-                String spid  = getString(R.string.livedata_audit_pid);
-                if (spid.isEmpty()){
-                    showAlert("Please configure the project ID for audit");
-                    return;
-                }
-                long pid = Long.parseLong(spid);
-
-                String skey  = getString(R.string.livedata_audit_key);
-                if (skey.isEmpty()){
-                    showAlert("Please configure the key for audit");
-                    return;
-                }
-
-                jsonObject.put("appKey", pid);
-                jsonObject.put("appSecret", skey);
+                jsonObject.put("callbackUrl", livedata_callbackUrl);
+                jsonObject.put("audioLang", livedata_audit_lang);
+                jsonObject.put("appKey", livedata_audit_pid);
+                jsonObject.put("appSecret", livedata_audit_key);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Toast.makeText(this, "Start Audit", Toast.LENGTH_SHORT).show();
+
             int ret = engine.setExtensionProperty(EXTENSION_VENDOR_NAME, EXTENSION_VIDEO_FILTER_WATERMARK, "startAudit", jsonObject.toString());
+            if (ret != 0 ){
+                showAlert("setExtensionProperty startAudit error " + ret);
+                return;
+            }
+            Toast.makeText(this, "Start Audit", Toast.LENGTH_SHORT).show();
             Log.i("sdktest","Start Audit " + ret);
         }
         else if (v.getId() == R.id.closeAudit){
@@ -361,7 +405,7 @@ public class SimpleExtension extends AppCompatActivity implements View.OnClickLi
         ChannelMediaOptions option = new ChannelMediaOptions();
         option.autoSubscribeAudio = true;
         option.autoSubscribeVideo = true;
-        int res = engine.joinChannel(accessToken, channelId, 0, option);
+        int res = engine.joinChannel(accessToken, channelId, (int)(System.currentTimeMillis()/1000), option);
         if (res != 0) {
             // Usually happens with invalid parameters
             // Error code description can be found at:
@@ -487,7 +531,7 @@ public class SimpleExtension extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onEvent(String vendor, String extension, String key, String value) {
         if (vendor.equals("iLiveData"))
-            addlog(value);
+            addlog(key + " " + value);
     }
 
 
