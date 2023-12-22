@@ -33,12 +33,12 @@
     [super viewDidLoad];
 
     
-    //翻译识别
+    //translation
     self.appKeyRTVT = @"";
     self.appSecretRTVT = @"";
     
     
-    //审核
+    //audit
     self.appKeyRTAU = @"";
     self.appSecretRTAU = @"";
     self.callbackUrl = @"";//Callback address for receiving audit results
@@ -66,7 +66,7 @@
         self.kit = [AgoraRtcEngineKit sharedEngineWithConfig:self.config delegate:self];
         
         
-        //音频
+        
         NSLog(@"[self.kit setClientRole:AgoraClientRoleBroadcaster]  %d",[self.kit setClientRole:AgoraClientRoleBroadcaster]);
         NSLog(@"[self.kit enableAudio];  %d",[self.kit enableAudio]);
         NSLog(@"self.kit enableExtensionWithVendor:  %d",[self.kit enableExtensionWithVendor:[iLiveDataSimpleFilterManager companyName] extension:[iLiveDataSimpleFilterManager rtvt_plugName] enabled:YES]);
@@ -74,7 +74,7 @@
         NSLog(@"[self.kit setDefaultAudioRouteToSpeakerphone:YES];   %d",[self.kit setDefaultAudioRouteToSpeakerphone:YES]);
         
         
-        //视频
+        
         
 
         AgoraVideoEncoderConfiguration * videoEncoderConfiguration = [[AgoraVideoEncoderConfiguration alloc] initWithSize:CGSizeMake(120, 160)
@@ -101,15 +101,20 @@
     });
     
 }
-//进入房间 开启rtvt
+
 -(void)_startRtvtButtonClick{
     
             
         NSDictionary * translateDic = @{@"appKey":self.appKeyRTVT,
                                         @"appSecret":self.appSecretRTVT,
                                         @"srcLanguage":@"zh",
-                                        @"destLanguage":@"en"
+                                        @"destLanguage":@"en",
+                                        @"srcAltLanguage":@[],
                                         
+                                        
+                                        // @"asrResult":@(YES),      Recognition result switch  The default YES is not passed
+                                        // @"transResult":@(YES),    Translation result switch  The default YES is not passed
+                                        // @"asrTempResult":@(NO),  Recognition tmp result switch  The default NO is not passed
         };
         
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:translateDic options:NSJSONWritingPrettyPrinted error:nil];

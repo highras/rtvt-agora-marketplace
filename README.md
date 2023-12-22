@@ -32,7 +32,7 @@ The development environment has to meet the following requirements:
   - A physical device (not an emulator) running Android 5.0 or later
 - iOS
   - Xcode 9.0 or later.
-  - A physical device (not an emulator) running iOS 9.0 or later.
+  - A physical device (not an emulator) running iOS 11.0 or later.
 
 
 <!--## 准备工作-->
