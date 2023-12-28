@@ -101,7 +101,7 @@ public class SimpleExtension extends AppCompatActivity implements View.OnClickLi
         record.setEnabled(false);
         local_view = findViewById(R.id.fl_local);
         rtvttestview = findViewById(R.id.rtvttest);
-        srcadapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, srcarrayList);
+        srcadapter = new MyAdapter(this, android.R.layout.simple_list_item_1, srcarrayList);
         rtvttestview.setAdapter(srcadapter);
 
         agora_app_id = getString(R.string.agora_app_id);
@@ -325,6 +325,10 @@ public class SimpleExtension extends AppCompatActivity implements View.OnClickLi
             Log.i("sdktest","setExtensionProperty closeAudit " + ret);
         }
         else if (v.getId() == R.id.btn_join) {
+            if (engine == null){
+                showAlert("Please configure the agora appid and key");
+                return;
+            }
             if (!joined) {
                 CommonUtil.hideInputBoard(this, et_channel);
                 // call when join button hit

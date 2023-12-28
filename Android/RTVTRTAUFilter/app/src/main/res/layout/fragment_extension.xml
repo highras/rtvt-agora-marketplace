@@ -28,11 +28,11 @@
                 android:layout_height="match_parent"/>
 
             <ListView
-                android:transcriptMode="alwaysScroll"
                 android:id="@+id/rtvttest"
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:layout_height="match_parent" />
+                android:transcriptMode="alwaysScroll" />
 
         </LinearLayout>
 
@@ -74,45 +74,51 @@
                 android:layout_height="match_parent">
 
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
+                    android:textAllCaps="false"
+                    android:textSize="14dp"
                     android:id="@+id/starttrans"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="12dp"
-                    android:text="start translate"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="32dp"
+                    android:text="StartTranslate"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/startaudit"></Button>
+                    app:layout_constraintTop_toBottomOf="@+id/startaudit"></androidx.appcompat.widget.AppCompatButton>
 
                 <androidx.appcompat.widget.AppCompatButton
+                    android:textAllCaps="false"
                     android:id="@+id/startaudit"
-                    android:layout_width="wrap_content"
+                    android:layout_width="130dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="4dp"
-                    android:text="start audit"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:text="StartAudit"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"></androidx.appcompat.widget.AppCompatButton>
 
                 <androidx.appcompat.widget.AppCompatButton
+                    android:textAllCaps="false"
                     android:id="@+id/closeAudit"
-                    android:layout_width="wrap_content"
+                    android:layout_width="130dp"
                     android:layout_height="wrap_content"
-                    android:text="close audit"
+                    android:text="CloseAudit"
                     app:layout_constraintBottom_toBottomOf="@+id/startaudit"
                     app:layout_constraintStart_toEndOf="@+id/startaudit"
                     app:layout_constraintTop_toTopOf="@+id/startaudit"
                     app:layout_constraintVertical_bias="0.0"></androidx.appcompat.widget.AppCompatButton>
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
+                    android:textAllCaps="false"
+                    android:textSize="14dp"
                     android:id="@+id/stoptrans"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:text="stop translate"
+                    android:text="StopTranslate"
                     app:layout_constraintBottom_toBottomOf="@+id/starttrans"
                     app:layout_constraintStart_toEndOf="@+id/starttrans"
                     app:layout_constraintTop_toTopOf="@+id/starttrans"
-                    app:layout_constraintVertical_bias="0.0"></Button>
+                    app:layout_constraintVertical_bias="0.0"></androidx.appcompat.widget.AppCompatButton>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
