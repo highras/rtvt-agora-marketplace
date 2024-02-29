@@ -13,28 +13,35 @@
     [self.view addSubview:self.addRoomButton];
     [self.addRoomButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(60);
-        make.left.equalTo(self.view).offset(200);
-        make.right.equalTo(self.view).offset(-100);
+        make.centerX.equalTo(self.view);
     }];
     
-    [self.view addSubview:self.startRtvtButton];
-    [self.startRtvtButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(self.addRoomButton);
+    
+    [self.view addSubview:self.leaveRoomButton];
+    [self.leaveRoomButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view);
         make.top.equalTo(self.addRoomButton.mas_bottom).offset(20);
     }];
 
-    [self.view addSubview:self.startRtauButton];
-    [self.startRtauButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(self.startRtvtButton);
+    [self.view addSubview:self.startRtvtButton];
+    [self.startRtvtButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view);
+        make.top.equalTo(self.leaveRoomButton.mas_bottom).offset(20);
+    }];
+    
+    [self.view addSubview:self.closeRtvtButton];
+    [self.closeRtvtButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view);
         make.top.equalTo(self.startRtvtButton.mas_bottom).offset(20);
     }];
+    
 
     self.translatedResultArray = [NSMutableArray array];
     self.recognizedResultArray = [NSMutableArray array];
     
     [self.view addSubview:self.translatedTableView];
     [self.translatedTableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.startRtauButton.mas_bottom).offset(50);
+        make.top.equalTo(self.closeRtvtButton.mas_bottom).offset(50);
         make.left.equalTo(self.view).offset(30);
         make.right.equalTo(self.view).offset(-30);
         make.height.equalTo(@160);
@@ -100,6 +107,43 @@
     }
 }
 
+- (void)showHudMessage:(NSString*)message hideTime:(int)hideTime{
+   
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        
+        MBProgressHUD * hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        //hud.backgroundView.style = MBProgressHUDBackgroundStyleSolidColor;
+        hud.bezelView.style = MBProgressHUDBackgroundStyleSolidColor;
+        hud.bezelView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8];
+        hud.mode = MBProgressHUDModeText;
+        hud.label.text = message;
+        hud.label.textColor = [UIColor whiteColor];
+        hud.label.numberOfLines = 0;
+        hud.removeFromSuperViewOnHide = YES;
+        [hud hideAnimated:YES afterDelay:hideTime];
+        
+    });
+    
+}
 
+
+-(void)showLoadHud{
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        
+        MBProgressHUD * hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.removeFromSuperViewOnHide = true;
+        hud.bezelView.style = MBProgressHUDBackgroundStyleSolidColor;
+        hud.bezelView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8];
+        hud.contentColor = [UIColor whiteColor];
+        hud.label.textColor = [UIColor whiteColor];
+        
+    });
+    
+}
 
 @end

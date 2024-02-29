@@ -11,6 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ViewController (UI)
 -(void)setUpUI;
+-(void)showHudMessage:(NSString*)message hideTime:(int)hideTime;
+-(void)showLoadHud;
+
 @end
 
 NS_ASSUME_NONNULL_END

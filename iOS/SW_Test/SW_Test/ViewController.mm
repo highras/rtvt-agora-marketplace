@@ -8,11 +8,14 @@
 #import "ViewController.h"
 #import "ViewController+UI.h"
 
-@interface ViewController ()<AgoraRtcEngineDelegate,AgoraRtcEngineDelegate2,AgoraMediaFilterEventDelegate>
+@interface ViewController ()<AgoraRtcEngineDelegate,AgoraMediaFilterEventDelegate>
 
 @property(nonatomic,strong)AgoraRtcEngineKit * kit;
 @property(nonatomic,strong)AgoraRtcEngineConfig * config;
 @property(nonatomic,strong)NSString * agoraToken;
+
+@property(nonatomic,assign)NSUInteger  agora_remoteUid;
+@property(nonatomic,assign)NSUInteger  agora_myUid;
 
 @property(nonatomic,strong)NSString * agora_appId;
 @property(nonatomic,strong)NSString * agora_Token;
@@ -20,10 +23,6 @@
 
 @property(nonatomic,strong)NSString * appKeyRTVT;
 @property(nonatomic,strong)NSString * appSecretRTVT;
-
-@property(nonatomic,strong)NSString * appKeyRTAU;
-@property(nonatomic,strong)NSString * appSecretRTAU;
-@property(nonatomic,strong)NSString * callbackUrl;
 
 @end
 
@@ -33,26 +32,22 @@
     [super viewDidLoad];
 
     
-    //translation
-    self.appKeyRTVT = @"";
-    self.appSecretRTVT = @"";
-    
-    
-    //audit
-    self.appKeyRTAU = @"";
-    self.appSecretRTAU = @"";
-    self.callbackUrl = @"";//Callback address for receiving audit results
-    
-    
     self.view.backgroundColor = [UIColor whiteColor];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         
         
-        self.agora_appId = @"";
-        self.agora_RoomId = @"";
-        self.agora_Token = @"";
+        self.agora_appId = nil;
+        self.agora_RoomId = @"888";
+        self.agora_myUid = arc4random() % 999999999;
         
+        self.appKeyRTVT = nil;
+        self.appSecretRTVT = @"";
+        
+        
+        if (self.agora_appId == nil || self.appSecretRTVT == nil ) {
+            return;
+        }
         
         [self setUpUI];
         self.agoraToken = self.agora_Token;
@@ -62,181 +57,204 @@
         self.config.channelProfile = AgoraChannelProfileLiveBroadcasting;
         self.config.audioScenario = AgoraAudioScenarioDefault;
         self.config.eventDelegate = self;
-
+        
+        
         self.kit = [AgoraRtcEngineKit sharedEngineWithConfig:self.config delegate:self];
-        
-        
         
         NSLog(@"[self.kit setClientRole:AgoraClientRoleBroadcaster]  %d",[self.kit setClientRole:AgoraClientRoleBroadcaster]);
         NSLog(@"[self.kit enableAudio];  %d",[self.kit enableAudio]);
-        NSLog(@"self.kit enableExtensionWithVendor:  %d",[self.kit enableExtensionWithVendor:[iLiveDataSimpleFilterManager companyName] extension:[iLiveDataSimpleFilterManager rtvt_plugName] enabled:YES]);
+        
+    
+        NSLog(@"self.kit enableExtensionWithVendor: post %d",[self.kit enableExtensionWithVendor:[iLiveDataSimpleFilterManager_post companyName] extension:[iLiveDataSimpleFilterManager_post rtvt_post_plugName] enabled:YES]);
+        NSLog(@"self.kit enableExtensionWithVendor:  pre%d",[self.kit enableExtensionWithVendor:[iLiveDataSimpleFilterManager_pre companyName] extension:[iLiveDataSimpleFilterManager_pre rtvt_pre_plugName] enabled:YES]);
+        
+
         NSLog(@"[self.kit setAudioProfile:AgoraAudioProfileDefault]  %d",[self.kit setAudioProfile:AgoraAudioProfileDefault]);
         NSLog(@"[self.kit setDefaultAudioRouteToSpeakerphone:YES];   %d",[self.kit setDefaultAudioRouteToSpeakerphone:YES]);
         
         
-        
-        
-
-        AgoraVideoEncoderConfiguration * videoEncoderConfiguration = [[AgoraVideoEncoderConfiguration alloc] initWithSize:CGSizeMake(120, 160)
-                                                                                                                frameRate:AgoraVideoFrameRateFps15
-                                                                                                                  bitrate:AgoraVideoBitrateStandard
-                                                                                                          orientationMode:AgoraVideoOutputOrientationModeFixedPortrait
-                                                                                                               mirrorMode:AgoraVideoMirrorModeAuto];
-        [self.kit setVideoEncoderConfiguration:videoEncoderConfiguration];
-        NSLog(@"[self.kit enableVideo];  %d",[self.kit enableVideo]);
-        NSLog(@"self.kit enableExtensionWithVendor:  %d",[self.kit enableExtensionWithVendor:[iLiveDataSimpleFilterManager companyName] extension:[iLiveDataSimpleFilterManager rtau_plugName] enabled:YES]);
-
-        AgoraRtcVideoCanvas * videoCanvas = [[AgoraRtcVideoCanvas alloc] init];
-        videoCanvas.uid = 0;
-        // the view to be binded
-
-        UIView * myView = [[UIView alloc] initWithFrame:CGRectMake(30, 60, 120, 160)];
-        myView.backgroundColor = [UIColor orangeColor];
-        [self.view addSubview:myView];
-        videoCanvas.view = myView;
-        videoCanvas.renderMode = AgoraVideoRenderModeHidden;
-        [self.kit setupLocalVideo:videoCanvas];
-        [self.kit startPreview];
-        
     });
     
 }
-
--(void)_startRtvtButtonClick{
-    
-            
-        NSDictionary * translateDic = @{@"appKey":self.appKeyRTVT,
-                                        @"appSecret":self.appSecretRTVT,
-                                        @"srcLanguage":@"zh",
-                                        @"destLanguage":@"en",
-                                        @"srcAltLanguage":@[],
-                                        
-                                        
-                                        // @"asrResult":@(YES),      Recognition result switch  The default YES is not passed
-                                        // @"transResult":@(YES),    Translation result switch  The default YES is not passed
-                                        // @"asrTempResult":@(NO),  Recognition tmp result switch  The default NO is not passed
-        };
-        
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:translateDic options:NSJSONWritingPrettyPrinted error:nil];
-        NSString * jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        
-        BOOL start_audio_translate_result = [self _setProperty:@"startAudioTranslation" value:jsonStr type:0];
-        
-        
-        if (  start_audio_translate_result == 0 ) {
-            
-            NSLog(@"Start the plug-in successfully");
-            [self.startRtvtButton setTitle:@"End RTVT" forState:UIControlStateNormal];
-            [self.startRtvtButton addTarget:self action:@selector(_endRtvtButtonClick) forControlEvents:UIControlEventTouchUpInside];
-            
-        }else{
-            
-            NSLog(@"Failed to start plug-in");
-            
-        }
-        
+- (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine remoteAudioStateChangedOfUid:(NSUInteger)uid state:(AgoraAudioRemoteState)state reason:(AgoraAudioRemoteReason)reason elapsed:(NSInteger)elapsed{
     
     
-}
--(void)_endRtvtButtonClick{
-    
-    BOOL end_audio_translate_result = [self _setProperty:@"closeAudioTranslation" value:@"end" type:0];
-    if (end_audio_translate_result == 0) {
-        [self.startRtvtButton setTitle:@"Start RTVT" forState:UIControlStateNormal];
-        [self.startRtvtButton addTarget:self action:@selector(_startRtvtButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    //后处理插件需要再此处开启   房间内需要有人才能开启
+    if (state == AgoraAudioRemoteStateStarting) {
+        [self showHudMessage:[NSString stringWithFormat:@"user %lu enter room  auto start translate",(unsigned long)uid] hideTime:1];
+        self.agora_remoteUid = uid;
+        
+        NSLog(@"remoteAudioStateChangedOfUid --- AgoraAudioRemoteStateStarting");
+        [self _endRtvtButtonClick];
+        [self _startRtvtButtonClick];
     }
     
 }
--(void)_startRtauButtonClick{
-    
-    int64_t ts1 = [[NSDate date] timeIntervalSince1970] * 1000;
-    NSDictionary * audioCheckDic = @{@"appKey":self.appKeyRTAU,
-                                     @"appSecret":self.appSecretRTAU,
-                                     @"streamId":[NSString stringWithFormat:@"%lld",ts1],
-                                     @"audioLang":@"zh-CN",
-                                     @"callbackUrl" : self.callbackUrl,
-                                     
-    };
 
+
+
+//enter room start rtvt
+-(void)_startRtvtButtonClick{
     
-    NSData *jsonData2 = [NSJSONSerialization dataWithJSONObject:audioCheckDic options:NSJSONWritingPrettyPrinted error:nil];
-    NSString * jsonStr2 = [[NSString alloc] initWithData:jsonData2 encoding:NSUTF8StringEncoding];
+    NSDictionary * translateDic = @{@"appKey":self.appKeyRTVT,
+                                    @"appSecret":self.appSecretRTVT,
+                                    @"srcLanguage":@"zh",
+                                    @"destLanguage":@"en",
+                                    @"srcAltLanguage":@[],
+                                    
+                                    
+                                    // @"asrResult":@(YES),      Recognition result switch  The default YES is not passed
+                                    // @"transResult":@(YES),    Translation result switch  The default YES is not passed
+                                    // @"asrTempResult":@(NO),  Recognition tmp result switch  The default NO is not passed
+                                    
+    };
     
     
-    BOOL start_check_result = [self _setProperty:@"startAudit" value:jsonStr2 type:1];
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:translateDic options:NSJSONWritingPrettyPrinted error:nil];
+    NSString * jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     
+    //startAudioTranslation_post   !when the room is opened with only one person will fail
+    //You need to focus on the method
+    //(void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine remoteAudioStateChangedOfUid:(NSUInteger)uid state:(AgoraAudioRemoteState)state reason:(AgoraAudioRemoteReason)reason elapsed:(NSInteger)elapsed
     
-    if (  start_check_result == 0 ) {
+    int start_audio_translate_result = [self _setProperty:@"startAudioTranslation_post" value:jsonStr type:0 isPost:YES];
+    int start_audio_translate_result2 = [self _setProperty:@"startAudioTranslation_pre" value:jsonStr type:0 isPost:NO];
+    
+    if (start_audio_translate_result == 0 && start_audio_translate_result2 == 0) {
         
-        NSLog(@"Start the plug-in successfully");
-        [self.startRtauButton setTitle:@"End RTAU" forState:UIControlStateNormal];
-        [self.startRtauButton addTarget:self action:@selector(_endRtauButtonClick) forControlEvents:UIControlEventTouchUpInside];
+        [self showHudMessage:@"start success" hideTime:1];
         
     }else{
         
-        NSLog(@"Failed to start plug-in");
+        [self showHudMessage:[NSString stringWithFormat:@"start fail %d",start_audio_translate_result] hideTime:1];
         
     }
+        
 }
--(void)_endRtauButtonClick{
+
+
+-(void)_endRtvtButtonClick{
     
-    BOOL end_check_result = [self _setProperty:@"closeAudit" value:@"end" type:1];
-    if (end_check_result == 0) {
-        [self.startRtauButton setTitle:@"Start RTAU" forState:UIControlStateNormal];
-        [self.startRtauButton addTarget:self action:@selector(_startRtauButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    int end_audio_translate_result = [self _setProperty:@"closeAudioTranslation_post" value:@"end" type:0 isPost:YES];
+    int end_audio_translate_result2 = [self _setProperty:@"closeAudioTranslation_pre" value:@"end" type:0 isPost:NO];
+    
+    if (end_audio_translate_result == 0 && end_audio_translate_result2 ==0) {
+        
+        
+        [self showHudMessage:@"close success" hideTime:1];
+        
+    }else{
+        
+        
+        [self showHudMessage:[NSString stringWithFormat:@"close fail %d",end_audio_translate_result] hideTime:1];
+        
     }
+    
+    
 }
 -(void)_startAddRoomButtonClick{
     
-    int result = [self.kit joinChannelByToken:self.agoraToken channelId:self.agora_RoomId info:nil uid:0 joinSuccess:^(NSString * _Nonnull channel, NSUInteger uid, NSInteger elapsed) {
+    
+    [self showLoadHud];
+    int result = [self.kit joinChannelByToken:self.agoraToken
+                                    channelId:self.agora_RoomId
+                                         info:nil
+                                          uid:self.agora_myUid
+                                  joinSuccess:^(NSString * _Nonnull channel, NSUInteger uid, NSInteger elapsed) {
         
-        
+       
+
     }];
+    
     if (result == 0) {
         
-        [self.addRoomButton setTitle:@"add room is ok" forState:UIControlStateNormal];
-        [self.addRoomButton removeTarget:self action:@selector(_startAddRoomButtonClick) forControlEvents:UIControlEventTouchUpInside];
+        [self showHudMessage:@"enter room success" hideTime:1];
+        
+        
+        
+        
+    }else{
+        
+        [self showHudMessage:@"enter room fail" hideTime:1];
+        
+        
         
     }
     
+    
 }
 
-//0 rtvt 1rtau
--(BOOL)_setProperty:(NSString*)key value:(NSString*)value type:(int)type{
+-(void)_leaveRoomButtonClick{
     
-    return [self.kit setExtensionPropertyWithVendor:[iLiveDataSimpleFilterManager companyName]
-                                          extension:(type == 0 ? [iLiveDataSimpleFilterManager rtvt_plugName] : [iLiveDataSimpleFilterManager rtau_plugName])
-                                                key:key
-                                              value:value];
+    [self showLoadHud];
+    BOOL result = [self.kit leaveChannel:^(AgoraChannelStats * _Nonnull stat) {
+            
+    }];
+    if (result == 0) {
+        
+        
+        [self showHudMessage:@"leave room success" hideTime:1];
+        
+    }else{
+        
+        [self showHudMessage:@"leave room fail" hideTime:1];
+        
+    }
+}
+//0 rtvt 1rtau
+-(int)_setProperty:(NSString*)key value:(NSString*)value type:(int)type  isPost:(BOOL)isPost{
+    
+    
+    AgoraExtensionInfo * info = [[AgoraExtensionInfo alloc] init];
+    info.remoteUid = self.agora_remoteUid;
+    info.channelId = self.agora_RoomId;
+    info.localUid = self.agora_myUid;
+    
+    int result;
+    if (isPost) {
+        result = [self.kit setExtensionPropertyWithVendor:[iLiveDataSimpleFilterManager_post companyName]
+                                                     extension:(type == 0 ? [iLiveDataSimpleFilterManager_post rtvt_post_plugName] : [iLiveDataSimpleFilterManager_post rtau_post_plugName])
+                                                 extensionInfo:info
+                                                           key:key
+                                                         value:value];
+        NSLog(@"post %d",result);
+    }else{
+        result = [self.kit setExtensionPropertyWithVendor:[iLiveDataSimpleFilterManager_pre companyName]
+                                                     extension:(type == 0 ? [iLiveDataSimpleFilterManager_pre rtvt_pre_plugName] : [iLiveDataSimpleFilterManager_pre rtau_pre_plugName])
+                                                 extensionInfo:info
+                                                           key:key
+                                                         value:value];
+        NSLog(@"pre %d",result);
+    }
+    
+    
+    
+    
+    return result;
+    
     
     
 }
 -(void)onEvent:(NSString *)provider extension:(NSString *)extension key:(NSString *)key value:(NSString *)value{
     
-    NSLog(@"onEvent  %@   %@  %@   %@",provider,extension,key,value);
+//    NSLog(@"onEvent  %@   %@  %@   %@",provider,extension,key,value);
+    
+    
+    NSError * error2;
+    NSData *jsonData = [value dataUsingEncoding:NSUTF8StringEncoding];
+     
+    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                        options:NSJSONReadingMutableContainers error:&error2];
+    if(error2 == nil){
+//        NSLog(@"dic %@ %lld",dic,[[dic objectForKey:@"startTs"] longLongValue]);
+    }
+    
     
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        
-        //NSDictionary * dic = @{@"startTs":@(startTs),@"endTs":@(endTs),@"result":result,@"recTs":@(recTs)};
-        NSError * error;
-        NSData *jsonData = [value dataUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary * dic = [NSJSONSerialization JSONObjectWithData:jsonData
-                                                            options:NSJSONReadingMutableContainers error:&error];
-        if(error == nil){
-            
-    //        [[dic objectForKey:@"startTs"] longLongValue];
-    //        [[dic objectForKey:@"endTs"] longLongValue];
-    //        [dic objectForKey:@"result"];//nsstring
-    //        [[dic objectForKey:@"recTs"] longLongValue];
-
-        }
-        
-        
-        
         if ([key isEqualToString:@"recognizeResult"]) {
             
-            [self.recognizedResultArray addObject:value];
+            [self.recognizedResultArray addObject:[NSString stringWithFormat:@"%@-%@",extension,[dic objectForKey:@"result"]]];
             [self.recognizedTableView reloadData];
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.recognizedResultArray.count - 1 inSection:0];
             [self.recognizedTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
@@ -244,7 +262,7 @@
             
         }else if ([key isEqualToString:@"translateResult"]){
             
-            [self.translatedResultArray addObject:value];
+            [self.translatedResultArray addObject:[NSString stringWithFormat:@"%@-%@",extension,[dic objectForKey:@"result"]]];
             [self.translatedTableView reloadData];
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.translatedResultArray.count - 1 inSection:0];
             [self.translatedTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
@@ -269,39 +287,54 @@
 
 
 #pragma mark ui
+
 -(UIButton*)startRtvtButton{
     if (_startRtvtButton == nil) {
         _startRtvtButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _startRtvtButton.titleLabel.font = [UIFont systemFontOfSize:13];
-        [_startRtvtButton setTitle:@"Start RTVT" forState:UIControlStateNormal];
+        [_startRtvtButton setTitle:@"start translate" forState:UIControlStateNormal];
         [_startRtvtButton addTarget:self action:@selector(_startRtvtButtonClick) forControlEvents:UIControlEventTouchUpInside];
         _startRtvtButton.backgroundColor = YS_Color_alpha(0x1b9fff,1);
         [_startRtvtButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     }
     return _startRtvtButton;
 }
--(UIButton*)startRtauButton{
-    if (_startRtauButton == nil) {
-        _startRtauButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _startRtauButton.titleLabel.font = [UIFont systemFontOfSize:13];
-        [_startRtauButton setTitle:@"Start RTAU" forState:UIControlStateNormal];
-        [_startRtauButton addTarget:self action:@selector(_startRtauButtonClick) forControlEvents:UIControlEventTouchUpInside];
-        _startRtauButton.backgroundColor = YS_Color_alpha(0x1b9fff,1);
-        [_startRtauButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+-(UIButton*)closeRtvtButton{
+    if (_closeRtvtButton == nil) {
+        _closeRtvtButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _closeRtvtButton.titleLabel.font = [UIFont systemFontOfSize:13];
+        [_closeRtvtButton setTitle:@"close translate" forState:UIControlStateNormal];
+        [_closeRtvtButton addTarget:self action:@selector(_endRtvtButtonClick) forControlEvents:UIControlEventTouchUpInside];
+        _closeRtvtButton.backgroundColor = YS_Color_alpha(0x1b9fff,1);
+        [_closeRtvtButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     }
-    return _startRtauButton;
+    return _closeRtvtButton;
 }
+
+-(UIButton*)leaveRoomButton{
+    if (_leaveRoomButton == nil) {
+        _leaveRoomButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _leaveRoomButton.titleLabel.font = [UIFont systemFontOfSize:13];
+        [_leaveRoomButton setTitle:@"leave room" forState:UIControlStateNormal];
+        [_leaveRoomButton addTarget:self action:@selector(_leaveRoomButtonClick) forControlEvents:UIControlEventTouchUpInside];
+        _leaveRoomButton.backgroundColor = YS_Color_alpha(0x1b9fff,1);
+        [_leaveRoomButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    }
+    return _leaveRoomButton;
+}
+
 -(UIButton*)addRoomButton{
     if (_addRoomButton == nil) {
         _addRoomButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _addRoomButton.titleLabel.font = [UIFont systemFontOfSize:13];
-        [_addRoomButton setTitle:@"first add room" forState:UIControlStateNormal];
+        [_addRoomButton setTitle:@"enter room" forState:UIControlStateNormal];
         [_addRoomButton addTarget:self action:@selector(_startAddRoomButtonClick) forControlEvents:UIControlEventTouchUpInside];
         _addRoomButton.backgroundColor = YS_Color_alpha(0x1b9fff,1);
         [_addRoomButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     }
     return _addRoomButton;
 }
+
 
 -(UITableView*)translatedTableView{
     if (_translatedTableView == nil) {

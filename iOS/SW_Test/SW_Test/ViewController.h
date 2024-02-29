@@ -6,7 +6,8 @@
 //
 
 #import <AgoraRtcKit/AgoraRtcKit.h>
-#import <iLiveData_Agora/iLiveData-Agora.h>
+#import <iLiveData_Agora_PRE/iLiveData_Agora_PRE.h>
+#import <iLiveData_Agora_POST/iLiveData_Agora_POST.h>
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
 #import "Masonry.h"
@@ -23,8 +24,11 @@
 @property(nonatomic,strong)NSMutableArray * recognizedResultArray;
 
 @property(nonatomic,strong)UIButton * startRtvtButton;
-@property(nonatomic,strong)UIButton * startRtauButton;
+@property(nonatomic,strong)UIButton * closeRtvtButton;
+@property(nonatomic,strong)UIButton * leaveRoomButton;
 @property(nonatomic,strong)UIButton * addRoomButton;
+
+
 @property(nonatomic,strong)UITableView * translatedTableView;
 @property(nonatomic,strong)UITableView * recognizedTableView;
 
