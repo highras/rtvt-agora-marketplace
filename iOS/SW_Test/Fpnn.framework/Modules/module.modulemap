@@ -1,6 +1,0 @@
-framework module Fpnn {
-  umbrella header "Fpnn.h"
-  export *
-
-  module * { export * }
-}

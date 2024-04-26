@@ -1,0 +1,6 @@
+framework module iLiveData_Agora_POST {
+  umbrella header "iLiveData_Agora_POST.h"
+  export *
+
+  module * { export * }
+}

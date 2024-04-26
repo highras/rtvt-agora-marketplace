@@ -1,0 +1,6 @@
+framework module iLiveData_Agora_PRE {
+  umbrella header "iLiveData_Agora_PRE.h"
+  export *
+
+  module * { export * }
+}
