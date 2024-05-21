@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSString * __nonnull)companyName;
 + (NSString * __nonnull)rtvt_post_plugName;
-+ (NSString * __nonnull)rtau_post_plugName;
+//+ (NSString * __nonnull)rtau_post_plugName;
 
 + (NSString*)getVersion;
 

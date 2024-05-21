@@ -37,11 +37,11 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         
         
-        self.agora_appId = nil;
-        self.agora_RoomId = @"888";
+        self.agora_appId = @"";
+        self.agora_RoomId = @"";
         self.agora_myUid = arc4random() % 999999999;
         
-        self.appKeyRTVT = nil;
+        self.appKeyRTVT = @"";
         self.appSecretRTVT = @"";
         
         
@@ -79,7 +79,7 @@
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine remoteAudioStateChangedOfUid:(NSUInteger)uid state:(AgoraAudioRemoteState)state reason:(AgoraAudioRemoteReason)reason elapsed:(NSInteger)elapsed{
     
     
-    //后处理插件需要再此处开启   房间内需要有人才能开启
+    //The post-processing plug-in needs to be opened here and someone in the room needs to open it
     if (state == AgoraAudioRemoteStateStarting) {
         [self showHudMessage:[NSString stringWithFormat:@"user %lu enter room  auto start translate",(unsigned long)uid] hideTime:1];
         self.agora_remoteUid = uid;
@@ -213,14 +213,14 @@
     int result;
     if (isPost) {
         result = [self.kit setExtensionPropertyWithVendor:[iLiveDataSimpleFilterManager_post companyName]
-                                                     extension:(type == 0 ? [iLiveDataSimpleFilterManager_post rtvt_post_plugName] : [iLiveDataSimpleFilterManager_post rtau_post_plugName])
+                                                     extension:[iLiveDataSimpleFilterManager_post rtvt_post_plugName]
                                                  extensionInfo:info
                                                            key:key
                                                          value:value];
         NSLog(@"post %d",result);
     }else{
         result = [self.kit setExtensionPropertyWithVendor:[iLiveDataSimpleFilterManager_pre companyName]
-                                                     extension:(type == 0 ? [iLiveDataSimpleFilterManager_pre rtvt_pre_plugName] : [iLiveDataSimpleFilterManager_pre rtau_pre_plugName])
+                                                     extension:[iLiveDataSimpleFilterManager_pre rtvt_pre_plugName]
                                                  extensionInfo:info
                                                            key:key
                                                          value:value];
@@ -357,3 +357,4 @@
     return _recognizedTableView;
 }
 @end
+

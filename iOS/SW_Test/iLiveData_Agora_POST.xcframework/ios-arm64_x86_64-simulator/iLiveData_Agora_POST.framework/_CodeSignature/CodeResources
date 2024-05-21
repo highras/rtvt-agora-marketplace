@@ -6,7 +6,7 @@
 	<dict>
 		<key>Headers/iLiveDataSimpleFilterManager_post.h</key>
 		<data>
-		Ikc1R0w/lNagW+dWp3U8b2/L2E0=
+		Ik1eILsGdiGFCVuMr+smh8OqC9g=
 		</data>
 		<key>Headers/iLiveData_Agora_POST.h</key>
 		<data>
@@ -14,7 +14,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		cu8rcD9ui7VEKLr10RysLYmkCfQ=
+		hg4MbPjW0RrsMCDoqBSbOTHHp+4=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -27,11 +27,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Ikc1R0w/lNagW+dWp3U8b2/L2E0=
+			Ik1eILsGdiGFCVuMr+smh8OqC9g=
 			</data>
 			<key>hash2</key>
 			<data>
-			wVEf3joS+5advbaXvSEJZ1TDW65HLG2EgzBYEIZfzBA=
+			t0iCDe4icLRsx+mEpIMAnIfnyDgs9Eo+sXPgPTTPe0Y=
 			</data>
 		</dict>
 		<key>Headers/iLiveData_Agora_POST.h</key>

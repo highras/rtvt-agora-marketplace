@@ -28,9 +28,9 @@
 		567AB70E28C19D9B0028B9C3 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 567AB70328C19D9B0028B9C3 /* MBProgressHUD.m */; };
 		567AB71128C19E310028B9C3 /* ViewController+UI.m in Sources */ = {isa = PBXBuildFile; fileRef = 567AB71028C19E310028B9C3 /* ViewController+UI.m */; };
 		6DF23249D56E52526BF040A9 /* Pods_SW_Test.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6A5D4869287C87BD28A4C12 /* Pods_SW_Test.framework */; };
-		847C894E2BDB5E7D00CC1D8C /* iLiveData_Agora_POST.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 847C894B2BDB5E7D00CC1D8C /* iLiveData_Agora_POST.xcframework */; };
 		847C894F2BDB5E7D00CC1D8C /* Fpnn.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 847C894C2BDB5E7D00CC1D8C /* Fpnn.xcframework */; };
-		847C89502BDB5E7D00CC1D8C /* iLiveData_Agora_PRE.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 847C894D2BDB5E7D00CC1D8C /* iLiveData_Agora_PRE.xcframework */; };
+		84A8B4522BFC45320061CB36 /* iLiveData_Agora_POST.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A8B4502BFC45320061CB36 /* iLiveData_Agora_POST.xcframework */; };
+		84A8B4532BFC45320061CB36 /* iLiveData_Agora_PRE.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A8B4512BFC45320061CB36 /* iLiveData_Agora_PRE.xcframework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,9 +95,9 @@
 		567AB70328C19D9B0028B9C3 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		567AB70F28C19E310028B9C3 /* ViewController+UI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ViewController+UI.h"; sourceTree = "<group>"; };
 		567AB71028C19E310028B9C3 /* ViewController+UI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ViewController+UI.m"; sourceTree = "<group>"; };
-		847C894B2BDB5E7D00CC1D8C /* iLiveData_Agora_POST.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = iLiveData_Agora_POST.xcframework; sourceTree = "<group>"; };
 		847C894C2BDB5E7D00CC1D8C /* Fpnn.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = Fpnn.xcframework; sourceTree = "<group>"; };
-		847C894D2BDB5E7D00CC1D8C /* iLiveData_Agora_PRE.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = iLiveData_Agora_PRE.xcframework; sourceTree = "<group>"; };
+		84A8B4502BFC45320061CB36 /* iLiveData_Agora_POST.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = iLiveData_Agora_POST.xcframework; sourceTree = "<group>"; };
+		84A8B4512BFC45320061CB36 /* iLiveData_Agora_PRE.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = iLiveData_Agora_PRE.xcframework; sourceTree = "<group>"; };
 		9432F7FB4360A5D9229AB17E /* Pods-SW_Test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SW_Test.debug.xcconfig"; path = "Target Support Files/Pods-SW_Test/Pods-SW_Test.debug.xcconfig"; sourceTree = "<group>"; };
 		A6A5D4869287C87BD28A4C12 /* Pods_SW_Test.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SW_Test.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -107,9 +107,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				847C89502BDB5E7D00CC1D8C /* iLiveData_Agora_PRE.xcframework in Frameworks */,
+				84A8B4532BFC45320061CB36 /* iLiveData_Agora_PRE.xcframework in Frameworks */,
 				847C894F2BDB5E7D00CC1D8C /* Fpnn.xcframework in Frameworks */,
-				847C894E2BDB5E7D00CC1D8C /* iLiveData_Agora_POST.xcframework in Frameworks */,
+				84A8B4522BFC45320061CB36 /* iLiveData_Agora_POST.xcframework in Frameworks */,
 				6DF23249D56E52526BF040A9 /* Pods_SW_Test.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -135,8 +135,8 @@
 			isa = PBXGroup;
 			children = (
 				847C894C2BDB5E7D00CC1D8C /* Fpnn.xcframework */,
-				847C894B2BDB5E7D00CC1D8C /* iLiveData_Agora_POST.xcframework */,
-				847C894D2BDB5E7D00CC1D8C /* iLiveData_Agora_PRE.xcframework */,
+				84A8B4502BFC45320061CB36 /* iLiveData_Agora_POST.xcframework */,
+				84A8B4512BFC45320061CB36 /* iLiveData_Agora_PRE.xcframework */,
 				567AB6E928C19D9A0028B9C3 /* Masonry */,
 				567AB6E828C19D9A0028B9C3 /* MBProgressHUD.h */,
 				567AB70328C19D9B0028B9C3 /* MBProgressHUD.m */,
