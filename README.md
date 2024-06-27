@@ -22,8 +22,8 @@ The LiveData RTVT extension encapsulates the core APIs of the LiveData RTVT SDK.
   - Android Studio 4.1 以上版本。
   - 运行 Android 5.0 或以上版本的真机（非模拟器）。
 - iOS 开发环境需满足以下要求：
-  - Xcode 9.0 或以上版本。
-  - 运行 iOS 9.0 或以上版本的真机（非模拟器）。
+  - Xcode 15.0 或以上版本。
+  - 运行 iOS 12.0 或以上版本的真机（非模拟器）。
 -->
 ## Prerequisites
 The development environment has to meet the following requirements:
