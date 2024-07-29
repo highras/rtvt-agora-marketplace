@@ -24,14 +24,14 @@
             <FrameLayout
                 android:id="@+id/fl_local"
                 android:layout_width="0dp"
-                android:layout_weight="0.5"
+                android:layout_weight="0"
                 android:layout_height="match_parent"/>
 
             <ListView
                 android:id="@+id/rtvttest"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
+                android:layout_weight="1"
                 android:transcriptMode="alwaysScroll" />
 
         </LinearLayout>
@@ -40,34 +40,8 @@
             android:id="@+id/controlPanel"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.4"
+            android:layout_weight="0.2"
             android:orientation="vertical">
-
-            <LinearLayout
-                android:id="@+id/volbar1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="16dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/recordingLabel"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="Recording Vol" />
-
-                <SeekBar
-                    android:id="@+id/recordingVol"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_weight="1" />
-
-            </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -75,38 +49,16 @@
 
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:textAllCaps="false"
-                    android:textSize="14dp"
                     android:id="@+id/starttrans"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="28dp"
                     android:text="StartTranslate"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/startaudit"></androidx.appcompat.widget.AppCompatButton>
-
-                <androidx.appcompat.widget.AppCompatButton
                     android:textAllCaps="false"
-                    android:id="@+id/startaudit"
-                    android:layout_width="130dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="16dp"
-                    android:text="StartAudit"
+                    android:textSize="14dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"></androidx.appcompat.widget.AppCompatButton>
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:textAllCaps="false"
-                    android:id="@+id/closeAudit"
-                    android:layout_width="130dp"
-                    android:layout_height="wrap_content"
-                    android:text="CloseAudit"
-                    app:layout_constraintBottom_toBottomOf="@+id/startaudit"
-                    app:layout_constraintStart_toEndOf="@+id/startaudit"
-                    app:layout_constraintTop_toTopOf="@+id/startaudit"
-                    app:layout_constraintVertical_bias="0.0"></androidx.appcompat.widget.AppCompatButton>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:textAllCaps="false"
@@ -118,7 +70,7 @@
                     app:layout_constraintBottom_toBottomOf="@+id/starttrans"
                     app:layout_constraintStart_toEndOf="@+id/starttrans"
                     app:layout_constraintTop_toTopOf="@+id/starttrans"
-                    app:layout_constraintVertical_bias="0.0"></androidx.appcompat.widget.AppCompatButton>
+                    app:layout_constraintVertical_bias="0.0" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 

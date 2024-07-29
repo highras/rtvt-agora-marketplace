@@ -152,13 +152,18 @@ This section describes the call sequence you implement to use LiveData RTVT feat
 #### Android
 When you initialize `AgoraRtcEngine` :
 - first call `addExtension` to load the extension
-- then call `enableExtension` to enable the extension
+- then call `enableExtension` to enable the extension<br>
+<font color=gray>
+    Tips:If you are sure that the so library exists, and the call to addExtension returns -3, please try to use System.loadLibrary to load the dynamic library.</font>
 
 ```java
 RtcEngineConfig config = new RtcEngineConfig();
-config.addExtension("agora-iLiveData-filter");
-engine = RtcEngine.create(config);
-engine.enableExtension("iLiveData", "RTVT", true);
+    config.addExtension("agora-iLiveData-filter-pre"); 
+    config.addExtension("agora-iLiveData-filter-post");
+
+    engine = RtcEngine.create(config);
+    engine.enableExtension("iLiveDataPre", "RTVT_PRE", true); 
+    engine.enableExtension("iLiveDataPost", "RTVT_POST", true);
 ```
 
 
@@ -216,18 +221,34 @@ AgoraRtcEngineConfig *config = [AgoraRtcEngineConfig new];
 
 #### Android
 
-When you are ready to start using RTVT, call `setExtensionProperty` and pass in the corresponding keys and values:
-- set key as`startAudioTranslation`
-- set value as `appkey`, `appsecret`, `srclang`, `dstLang` in JSON
+Call `setExtensionProperty` to specify key as `startAudioTranslation_post`, `startAudioTranslation_pre` and pass `appkey`, `appsecret` and other parameters in value in json format. appsecret` parameters in value.
+
 
 ```java
-JSONObject jsonObject = new JSONObject();
-jsonObject.put("appKey", "appKey");
-jsonObject.put("appSecret", "appSecrect");
-jsonObject.put("srclang", "zh");
-jsonObject.put("dstLang", "en");
+    JSONObject jsonObject = new JSONObject();
+    jsonObject.put("appKey", "");
+    jsonObject.put("appSecret", "");
+    jsonObject.put("srcLang", "zh");
+    jsonObject.put("dstLang", "en");
+    jsonObject.addProperty("asrResult", true);
+    jsonObject.addProperty("transResult", true);
+    jsonObject.addProperty("tempResult", false);
+```
 
-engine.setExtensionProperty(EXTENSION_VENDOR_NAME, EXTENSION_AUDIO_FILTER_VOLUME, "startAudioTranslation", jsonObject.toString());
+
+```java
+    ExtensionInfo extensionInfo = new ExtensionInfo();
+    extensionInfo.localUid = ;
+    extensionInfo.channelId = ;
+    extensionInfo.remoteUid = ;
+```
+-Post
+```java
+    engine.setExtensionProperty("iLiveDataPost", "RTVT_POST", extensionInfo, "startAudioTranslation_post", jsonObject.toString());
+```
+-Pre
+```java
+    engine.setExtensionProperty("iLiveDataPre", "RTVT_PRE", "startAudioTranslation_pre", jsonObject.toString());
 ```
 
 #### iOS
@@ -281,11 +302,13 @@ NSString * translateDicJsonString = [[NSString alloc] initWithData:translateDicJ
 #### Android
 
 When stop using RTVT, call `setExtensionProperty` and pass in the corresponding keys and values:
-- set key as`closeAudioTranslation`
-- set value as `end`
 
 ```java
-engine.setExtensionProperty(EXTENSION_VENDOR_NAME, EXTENSION_AUDIO_FILTER_VOLUME, "closeAudioTranslation", "end");
+    engine.setExtensionProperty("iLiveDataPost", "RTVT_POST", "closeAudioTranslation_post", "{}");
+```
+- 前处理
+```java
+    engine.setExtensionProperty("iLiveDataPre", "RTVT_PRE", "closeAudioTranslation_pre", "{}");
 ```
 
 #### iOS
@@ -339,18 +362,28 @@ LiveData RTVT extension provides result of voice transcription and translation, 
 
 After enable LiveData RTVT extension， you can receive the results of voice transcription and translation via `onEvent` callback. The description of `onEvent` callback keys can be seen below.
 
+- Post
 ```java
 @Override
 public void onEvent(String vendor, String extension, String key, String value) {
-      key: "recognizeResult"  "translateResult"
-      value:
-        {
-            ""result", 
-            "startTs", 
-            "endTs",
-        }
+  vendor: “iLiveDataPost”
+    key: “recognizeResult ‘RecognizeResult identifier ’translateResult ‘TranslateResult ’TranslateResult identifier ‘recognizedTempResult ’Temporary RecognizeResult identifier ‘translatedTempResult ’TemporaryTranslateResult identifier 
+    extension: “RTVT_POST”
+      value: the corresponding keys are recognized result and translated result and temporary recognized result and temporary translated result, respectively.
 }
 ```
+
+- Pre
+```java
+@Override
+public void onEvent(String vendor, String extension, String key, String value) {
+  vendor: “iLiveDataPre”
+    key: “recognizeResult ‘RecognizeResult identifier ’translateResult ‘TranslateResult ’TranslateResult identifier ‘recognizedTempResult ’TemporaryResult identifier ‘translatedTempResult ’TemporaryTranslateResult identifier 
+    extension: “RTVT_PRE”
+      value: the corresponding keys are recognized result and translated result and temporary recognized result and temporary translated result, respectively.
+}
+```
+
 #### iOS
 After enable LiveData RTVT extension， you can receive the results of voice transcription and translation via `onEvent` callback. The description of `onEvent` callback keys can be seen below.
 
