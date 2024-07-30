@@ -163,13 +163,13 @@ public class SimpleExtension extends AppCompatActivity implements View.OnClickLi
                 {
                     int result = engine.enableExtension(EXTENSION_VENDOR_NAME_PRE, EXTENSION_RTVT_FILTER_PRE, true);
                     if (result <0){
-                        showAlert("enableExtension error:" +ret + " " + EXTENSION_RTVT_FILTER_PRE );
+                        showAlert("enableExtension error:" +result + " " + EXTENSION_RTVT_FILTER_PRE );
                         return;
                     }
 
                     result = engine.enableExtension(EXTENSION_VENDOR_NAME_POST, EXTENSION_RTVT_FILTER_POST, true);
                     if (result <0){
-                        showAlert("enableExtension error:" +ret + " " + EXTENSION_RTVT_FILTER_POST );
+                        showAlert("enableExtension error:" +result + " " + EXTENSION_RTVT_FILTER_POST );
                         return;
                     }
 /*                    engine.enableVideo();
@@ -188,13 +188,13 @@ public class SimpleExtension extends AppCompatActivity implements View.OnClickLi
             else{
                 int result = engine.enableExtension(EXTENSION_VENDOR_NAME_PRE, EXTENSION_RTVT_FILTER_PRE, true);
                 if (result <0){
-                    showAlert("enableExtension error:" +ret + " " + EXTENSION_RTVT_FILTER_PRE );
+                    showAlert("enableExtension error:" +result + " " + EXTENSION_RTVT_FILTER_PRE );
                     return;
                 }
 
                 result = engine.enableExtension(EXTENSION_VENDOR_NAME_POST, EXTENSION_RTVT_FILTER_POST, true);
                 if (result <0){
-                    showAlert("enableExtension error:" +ret + " " + EXTENSION_RTVT_FILTER_POST );
+                    showAlert("enableExtension error:" +result + " " + EXTENSION_RTVT_FILTER_POST );
                     return;
                 }
 /*                engine.enableVideo();
